@@ -21,6 +21,7 @@ function check_dir() {
 check_dir
 
 function create_records() {
+  # function to Create Records
   echo "Enter the Author:"
   read -r AUTHOR
   echo "Enter the Title:"
@@ -41,27 +42,37 @@ function create_records() {
   echo "Records Successfully Created"
 }
 
+function search_records() {
+  # Function to Search Records
+  echo "Enter Book Author or Title:"
+  read -r SEARCH
+  # grep "$SEARCH" $BASEDIR
+  # grep -iRl "$SEARCH" db_records
+  for REC in $(grep -iRl "$SEARCH" $BASEDIR); do
+    awk -F ":" '{ print $1 ":" $2 }' $REC
+  done
+}
+
 if [[ -z "$1" ]]; then
   echo "No arguments supplied :( "
   help_menu
 else
-  echo $#
   case "$1" in
   "--help")
     help_menu
     ;;
   "--create")
-    echo "create records"
     create_records
     ;;
   "--delete")
     echo "delete records"
     ;;
   "--search")
-    echo "search records"
+    search_records
     ;;
   *)
     echo ":( Invalid Argument"
+    help_menu
     ;;
   esac
 
