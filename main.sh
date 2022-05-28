@@ -49,6 +49,7 @@ function search_records() {
   # grep "$SEARCH" $BASEDIR
   # grep -iRl "$SEARCH" db_records
   for REC in $(grep -iRl "$SEARCH" $BASEDIR); do
+    echo "-----------------------------------------"
     awk -F ":" '{ print $1 ":" $2 }' $REC
   done
 }
