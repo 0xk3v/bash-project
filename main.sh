@@ -20,10 +20,12 @@ function check_dir() {
 }
 check_dir
 
+# function to Create Records
 function create_records() {
-  # function to Create Records
   echo "Enter the Author:"
   read -r AUTHOR
+  echo "Would you like to Add another Authors??(y/n)"
+
   echo "Enter the Title:"
   read -r TITLE
   echo "Enter the Pages:"
@@ -31,7 +33,7 @@ function create_records() {
   echo "Enter the Year:"
   read -r YEAR
 
-  local RECORDNAME=$(echo "$TITLE $PAGES$YEAR.txt" | tr 'A-Z' 'a-z' | tr ' ' '_')
+  local RECORDNAME=$(echo "$TITLE $PAGES$YEAR$RANDOM.txt" | tr 'A-Z' 'a-z' | tr ' ' '_')
 
   # Outputting Records to a file
   echo "Author: $AUTHOR" >>$BASEDIR/$RECORDNAME
@@ -42,8 +44,8 @@ function create_records() {
   echo "Records Successfully Created"
 }
 
+# Function to Search Records
 function search_records() {
-  # Function to Search Records
   echo "Enter Book Author or Title:"
   read -r SEARCH
   # grep "$SEARCH" $BASEDIR
@@ -52,6 +54,19 @@ function search_records() {
     echo "-----------------------------------------"
     awk -F ":" '{ print $1 ":" $2 }' $REC
   done
+}
+
+# Function to Delete
+# To be Done
+function delete_records() {
+  echo "Enter The record to delete"
+  read -r REC_
+  grep -iRl "$REC_" $BASEDIR
+  echo "Do you want to delete the file(s) above? (y/n)"
+  read CHOICE
+  if [[ $CHOICE == "y" ]]; then
+    rm -fr $(grep -iRl "$REC_" $BASEDIR)
+  fi
 }
 
 if [[ -z "$1" ]]; then
@@ -66,7 +81,7 @@ else
     create_records
     ;;
   "--delete")
-    echo "delete records"
+    delete_records
     ;;
   "--search")
     search_records
